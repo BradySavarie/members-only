@@ -1,3 +1,16 @@
+import { Routes, Route } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
+import Layout from './components/Layout';
+import IndexPage from './pages/IndexPage';
+
 export default function App() {
-    return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<IndexPage />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
 }
