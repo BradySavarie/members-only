@@ -1,8 +1,10 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 
@@ -19,6 +21,8 @@ app.use(
         origin: 'http://localhost:5173',
     })
 );
+
+mongoose.connect(process.env.MONGO_URI);
 
 app.use('/', indexRouter);
 
