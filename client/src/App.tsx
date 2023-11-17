@@ -3,6 +3,10 @@ import { BrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout';
 import IndexPage from './pages/IndexPage';
 import RegisterPage from './pages/RegisterPage';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.withCredentials = true;
 
 export default function App() {
     return (
