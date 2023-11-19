@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     // search for a user that matches an email
-    const user = await User.find({ email });
+    const user = await User.findOne({ email });
 
     if (user) {
         // if user exists, use bcrypt to compare passwords
@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
             );
         }
     } else {
-        res.json('Not found');
+        res.status(422).json('Not found');
     }
 });
 
