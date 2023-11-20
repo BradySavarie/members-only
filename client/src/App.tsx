@@ -5,6 +5,8 @@ import IndexPage from './pages/IndexPage';
 import RegisterPage from './pages/RegisterPage';
 import axios from 'axios';
 import LoginPage from './pages/LoginPage';
+import { UserContextProvider } from './context/UserContext';
+import LogoutPage from './pages/LogoutPage';
 
 axios.defaults.baseURL = 'http://localhost:3000';
 axios.defaults.withCredentials = true;
@@ -12,13 +14,16 @@ axios.defaults.withCredentials = true;
 export default function App() {
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<IndexPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                </Route>
-            </Routes>
+            <UserContextProvider>
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                        <Route index element={<IndexPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/logout" element={<LogoutPage />} />
+                    </Route>
+                </Routes>
+            </UserContextProvider>
         </BrowserRouter>
     );
 }
