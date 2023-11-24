@@ -23,11 +23,13 @@ export default function LogoutPage() {
     }
 
     return (
-        <>
-            <div>Are you sure you want to log out?</div>
-            <button onClick={logout} className="primary max-w-sm mt-2">
-                Logout
-            </button>
-        </>
+        <div className="flex justify-center grow py-32">
+            <div>
+                <div>Are you sure you want to log out?</div>
+                <button onClick={logout} className="primary max-w-sm mt-2">
+                    Logout
+                </button>
+            </div>
+        </div>
     );
 }

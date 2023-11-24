@@ -16,8 +16,6 @@ export default function LoginPage() {
     async function handleLoginSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const { data } = await axios.post('/login', { email, password });
-        // time to do stuff with the data once received!
-        console.log(data);
         setUser(data);
     }
 
