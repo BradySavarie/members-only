@@ -1,3 +1,5 @@
+import MessageBoard from '../components/MessageBoard';
+
 export default function IndexPage() {
     return (
         <div className="flex flex-col outline justify-center items-center grow py-10 px-40 gap-6">
@@ -10,9 +12,7 @@ export default function IndexPage() {
                     they can only see the story and wonder who wrote it.
                 </p>
             </div>
-            <div className="flex grow w-full outline justify-center items-center">
-                This is where the chat board will be. Login to view.
-            </div>
+            <MessageBoard />
         </div>
     );
 }
