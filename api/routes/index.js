@@ -69,4 +69,18 @@ router.get('/profile', (req, res) => {
     }
 });
 
+router.post('/newMessage', (req, res) => {
+    const { message } = req.body;
+    const { token } = req.cookies;
+
+    if (token) {
+        jwt.verify(token, process.env.jwtSecret, {}, async (err, userData) => {
+            if (err) throw err;
+            // create new message
+        });
+    } else {
+        res.json(null);
+    }
+});
+
 module.exports = router;

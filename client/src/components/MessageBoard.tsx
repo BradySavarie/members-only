@@ -1,11 +1,21 @@
-import { useState } from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 
 export default function MessageBoard() {
     const [message, setMessage] = useState('');
 
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        await axios.post('/newMessage', { message });
+    }
+
     return (
         <div className="flex grow w-full outline justify-center px-4 py-2">
-            <form action="" className="flex items-end grow w-full">
+            <form
+                action=""
+                className="flex items-end grow w-full"
+                onSubmit={handleSubmit}
+            >
                 <div className="flex gap-2 items-center w-full">
                     <textarea
                         name="newMessage"
