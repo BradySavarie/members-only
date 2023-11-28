@@ -4,6 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const Message = require('../models/Message');
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 
@@ -69,18 +70,29 @@ router.get('/profile', (req, res) => {
     }
 });
 
-router.post('/newMessage', (req, res) => {
+router.post('/newMessage', async (req, res) => {
     const { message } = req.body;
     const { token } = req.cookies;
 
     if (token) {
         jwt.verify(token, process.env.jwtSecret, {}, async (err, userData) => {
             if (err) throw err;
-            // create new message
+            const currentUser = await User.findById(userData.id);
+            const messageDoc = await Message.create({
+                user: currentUser,
+                time: Date.now(),
+                body: message,
+            });
+            res.json(messageDoc);
         });
     } else {
         res.json(null);
     }
+});
+
+router.get('/messages', async (req, res) => {
+    const messages = await Message.find();
+    res.json(messages);
 });
 
 module.exports = router;

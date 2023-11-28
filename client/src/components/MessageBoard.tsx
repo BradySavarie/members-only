@@ -1,12 +1,29 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+type MessageType = {
+    user: string;
+    time: Date;
+    body: string;
+};
 
 export default function MessageBoard() {
     const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState<MessageType[]>([]);
+
+    useEffect(() => {
+        axios.get('/messages').then((response) => {
+            setMessages(response.data);
+        });
+    }, []);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        await axios.post('/newMessage', { message });
+        const { data: newMessage } = await axios.post('/newMessage', {
+            message,
+        });
+        setMessage('');
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
     }
 
     return (
