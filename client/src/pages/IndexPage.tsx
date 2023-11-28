@@ -2,7 +2,7 @@ import MessageBoard from '../components/MessageBoard';
 
 export default function IndexPage() {
     return (
-        <div className="flex flex-col outline justify-center items-center grow py-10 px-40 gap-6">
+        <div className="flex flex-col justify-center items-center grow py-10 px-40 gap-6">
             <div className="flex flex-col justify-center items-center gap-4">
                 <h1 className="text-4xl font-semibold">
                     Welcome to the clubhouse

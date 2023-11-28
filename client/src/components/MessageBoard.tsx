@@ -1,21 +1,34 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { format, parseISO } from 'date-fns';
+import React, { useEffect, useRef, useState } from 'react';
 
 type MessageType = {
     user: string;
-    time: Date;
+    time: string;
     body: string;
 };
 
 export default function MessageBoard() {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<MessageType[]>([]);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         axios.get('/messages').then((response) => {
             setMessages(response.data);
+            scrollToBottom();
         });
     }, []);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -27,10 +40,67 @@ export default function MessageBoard() {
     }
 
     return (
-        <div className="flex grow w-full outline justify-center px-4 py-2">
+        <div className="flex flex-col grow w-full outline outline-gray-200 shadow-md justify-center px-4 pb-2 pt-4 gap-2 relative">
+            <div className="overflow-y-auto max-h-60 mb-20">
+                {messages.length === 0 && (
+                    <div className="flex flex-col items-center gap-1 grow justify-center">
+                        <p className="text-xl">No Messages</p>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"
+                            />
+                        </svg>
+                    </div>
+                )}
+                {messages.length > 0 && (
+                    <div className="flex flex-col justify-end gap-2">
+                        {messages.map((curr, index) => (
+                            <div className="flex flex-col gap-1 p-1">
+                                <div
+                                    className="rounded-2xl outline px-4 py-2"
+                                    key={index}
+                                >
+                                    <div className="flex gap-2">
+                                        <div className="bg-gray-500 rounded-full text-white border border-gray-500 overflow-hidden">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="currentColor"
+                                                className="w-6 h-6 relative top-1"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <p>{curr.body}</p>
+                                    </div>
+                                </div>
+                                <p className="text-xs text-gray-500 justify-end flex pr-4">
+                                    Sent on{' '}
+                                    {format(parseISO(curr.time), 'MMM dd')} at{' '}
+                                    {format(parseISO(curr.time), 'h:mm')}
+                                </p>
+                            </div>
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </div>
+                )}
+            </div>
             <form
                 action=""
-                className="flex items-end grow w-full"
+                className="flex items-end w-full absolute bottom-2 left-0 p-2"
                 onSubmit={handleSubmit}
             >
                 <div className="flex gap-2 items-center w-full">
@@ -40,6 +110,7 @@ export default function MessageBoard() {
                         rows={1}
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
+                        className="shadow-md"
                     />
                     <button type="submit" className="flex gap-1">
                         <svg

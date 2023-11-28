@@ -80,7 +80,7 @@ router.post('/newMessage', async (req, res) => {
             const currentUser = await User.findById(userData.id);
             const messageDoc = await Message.create({
                 user: currentUser,
-                time: Date.now(),
+                time: new Date(),
                 body: message,
             });
             res.json(messageDoc);
