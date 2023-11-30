@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { format, parseISO } from 'date-fns';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { UserContext } from '../context/UserContext';
 
 type MessageType = {
     user: string;
@@ -12,6 +13,7 @@ export default function MessageBoard() {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<MessageType[]>([]);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const contextValue = useContext(UserContext);
 
     useEffect(() => {
         axios.get('/messages').then((response) => {
@@ -23,6 +25,11 @@ export default function MessageBoard() {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    if (!contextValue) {
+        return null;
+    }
+    const { user } = contextValue;
 
     const scrollToBottom = () => {
         if (messagesEndRef.current) {
@@ -40,7 +47,7 @@ export default function MessageBoard() {
     }
 
     return (
-        <div className="flex flex-col grow w-full outline outline-gray-200 shadow-md justify-center px-4 pb-2 pt-4 gap-2 relative">
+        <div className="flex flex-col grow w-full outline outline-gray-200 shadow-md justify-center px-4 pb-2 pt-4 gap-2 relative bg-secondary rounded-2xl">
             <div className="overflow-y-auto max-h-60 mb-20">
                 {messages.length === 0 && (
                     <div className="flex flex-col items-center gap-1 grow justify-center">
@@ -62,11 +69,11 @@ export default function MessageBoard() {
                     </div>
                 )}
                 {messages.length > 0 && (
-                    <div className="flex flex-col justify-end gap-2">
+                    <div className="flex flex-col justify-end gap-2 ">
                         {messages.map((curr, index) => (
                             <div className="flex flex-col gap-1 p-1">
                                 <div
-                                    className="rounded-2xl outline px-4 py-2"
+                                    className="rounded-2xl bg-white px-4 py-2"
                                     key={index}
                                 >
                                     <div className="flex gap-2">
@@ -74,7 +81,7 @@ export default function MessageBoard() {
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 24 24"
-                                                fill="currentColor"
+                                                fill={'currentColor'}
                                                 className="w-6 h-6 relative top-1"
                                             >
                                                 <path
@@ -103,31 +110,40 @@ export default function MessageBoard() {
                 className="flex items-end w-full absolute bottom-2 left-0 p-2"
                 onSubmit={handleSubmit}
             >
-                <div className="flex gap-2 items-center w-full">
-                    <textarea
-                        name="newMessage"
-                        placeholder="Enter Message"
-                        rows={1}
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        className="shadow-md"
-                    />
-                    <button type="submit" className="flex gap-1">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                <div className="flex gap-2 items-center w-full px-4">
+                    {user && (
+                        <>
+                            <textarea
+                                name="newMessage"
+                                placeholder="Enter Message"
+                                rows={1}
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                className="shadow-md bg-white"
                             />
-                        </svg>
-                    </button>
+                            <button type="submit" className="flex gap-1">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="white"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="black"
+                                    className="w-6 h-6"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                                    />
+                                </svg>
+                            </button>
+                        </>
+                    )}
+                    {!user && (
+                        <div className="flex grow bg-white rounded-2xl shadow-md justify-center px-6 py-2 mx-28 whitespace-nowrap">
+                            <p className="text-md ">Login to post a message!</p>
+                        </div>
+                    )}
                 </div>
             </form>
         </div>

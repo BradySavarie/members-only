@@ -22,7 +22,7 @@ export default function Header() {
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
-                    stroke="currentColor"
+                    stroke="#43BCCD"
                     className="w-8 h-8"
                 >
                     <path
@@ -43,7 +43,7 @@ export default function Header() {
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
-                                stroke="currentColor"
+                                stroke="#43BCCD"
                                 className="w-6 h-6"
                             >
                                 <path
@@ -64,7 +64,7 @@ export default function Header() {
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
-                                stroke="currentColor"
+                                stroke="#43BCCD"
                                 className="w-6 h-6"
                             >
                                 <path
@@ -88,7 +88,7 @@ export default function Header() {
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
-                                stroke="currentColor"
+                                stroke="#43BCCD"
                                 className="w-6 h-6"
                             >
                                 <path
