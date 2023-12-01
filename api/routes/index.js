@@ -92,7 +92,7 @@ router.post('/newMessage', async (req, res) => {
 });
 
 router.get('/messages', async (req, res) => {
-    const messages = await Message.find();
+    const messages = await Message.find({}).populate('user', 'email');
     res.json(messages);
 });
 

@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 
 type MessageType = {
-    user: string;
+    user: { email: string; _id: string };
     time: string;
     body: string;
 };
@@ -97,7 +97,7 @@ export default function MessageBoard() {
                                 {user?.isMember && (
                                     <div className="flex justify-between">
                                         <p className="text-xs text-gray-500 pr-4">
-                                            {user?.email}
+                                            {curr.user.email}
                                         </p>
                                         <p className="text-xs text-gray-500 justify-end flex pr-4">
                                             Sent on{' '}
