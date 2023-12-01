@@ -20,6 +20,7 @@ router.post('/register', async (req, res) => {
             name,
             email,
             password: bcrypt.hashSync(password, bcryptSalt),
+            isMember: false,
         });
         res.json(user);
     } catch {
