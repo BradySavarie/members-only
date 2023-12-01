@@ -52,7 +52,7 @@ export default function RegisterPage() {
                     />
                     <button className="primary mt-4">Register</button>
                     <div className="text-center py-2 text-gray-500">
-                        Already a member?{' '}
+                        Already Signed Up?{' '}
                         <Link className="underline text-black" to={'/login'}>
                             Login
                         </Link>
