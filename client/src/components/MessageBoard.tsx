@@ -94,11 +94,35 @@ export default function MessageBoard() {
                                         <p>{curr.body}</p>
                                     </div>
                                 </div>
-                                <p className="text-xs text-gray-500 justify-end flex pr-4">
-                                    Sent on{' '}
-                                    {format(parseISO(curr.time), 'MMM dd')} at{' '}
-                                    {format(parseISO(curr.time), 'h:mm')}
-                                </p>
+                                {user?.isMember && (
+                                    <div className="flex justify-between">
+                                        <p className="text-xs text-gray-500 pr-4">
+                                            {user?.email}
+                                        </p>
+                                        <p className="text-xs text-gray-500 justify-end flex pr-4">
+                                            Sent on{' '}
+                                            {format(
+                                                parseISO(curr.time),
+                                                'MMM dd'
+                                            )}{' '}
+                                            at{' '}
+                                            {format(
+                                                parseISO(curr.time),
+                                                'h:mm'
+                                            )}
+                                        </p>
+                                    </div>
+                                )}
+                                {!user?.isMember && (
+                                    <div className="flex justify-between">
+                                        <p className="text-xs text-gray-500 pr-4">
+                                            Anonymous
+                                        </p>
+                                        <p className="text-xs text-gray-500 pr-4">
+                                            Sent
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         ))}
                         <div ref={messagesEndRef} />
