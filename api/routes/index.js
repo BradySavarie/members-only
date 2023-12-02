@@ -96,4 +96,29 @@ router.get('/messages', async (req, res) => {
     res.json(messages);
 });
 
+router.put('/member', (req, res) => {
+    const { token } = req.cookies;
+
+    if (token) {
+        jwt.verify(token, process.env.jwtSecret, {}, async (err, userData) => {
+            if (err) throw err;
+
+            try {
+                const updatedResult = await User.findByIdAndUpdate(
+                    { _id: userData.id },
+                    {
+                        isMember: true,
+                    },
+                    { new: true }
+                );
+                res.json(updatedResult);
+            } catch (err) {
+                res.json(null);
+            }
+        });
+    } else {
+        res.json(null);
+    }
+});
+
 module.exports = router;

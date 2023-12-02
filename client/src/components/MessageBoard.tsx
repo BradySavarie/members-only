@@ -71,7 +71,10 @@ export default function MessageBoard() {
                 {messages.length > 0 && (
                     <div className="flex flex-col justify-end gap-2 ">
                         {messages.map((curr, index) => (
-                            <div className="flex flex-col gap-1 p-1">
+                            <div
+                                key={index}
+                                className="flex flex-col gap-1 p-1"
+                            >
                                 <div
                                     className="rounded-2xl bg-white px-4 py-2"
                                     key={index}
